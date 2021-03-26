@@ -128,7 +128,7 @@ Apify.main(async () => {
           return  offers
         })
 
-          const { asin, keyword, productUrl, title, description, Offers } = request.userData
+          const { asin, keyword, productUrl, title, description} = request.userData
 
           const item = {
             title,
