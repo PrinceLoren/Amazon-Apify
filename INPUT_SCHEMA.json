@@ -1,0 +1,15 @@
+{
+    "title": "Amazon",
+    "description": "Daniil",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+      "keyword": {
+        "title": "Keyword",
+        "type": "string",
+        "description": "description required",
+        "editor": "textfield"
+      }
+    },
+    "required": ["keyword"]
+  }
