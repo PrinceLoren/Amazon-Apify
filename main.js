@@ -22,6 +22,7 @@ Apify.main(async () => {
   })
 
   const crawler = new Apify.PuppeteerCrawler({
+
     requestQueue,
     handlePageFunction: async ({ page, request }) => {
 
@@ -29,6 +30,8 @@ Apify.main(async () => {
           console.log('Start page is:', request.url)
 
           try {
+            await page.waitForSelector('.s-result-list', { timeout: 10000 })
+
             const asins = await page.$$eval('.s-result-item', async (items) => {
                 return items.map((item) => item.dataset.asin).filter((item) => item !== '' && item !== undefined)
             })
@@ -98,13 +101,46 @@ Apify.main(async () => {
             description: PageInfo.description
           }
         })
+
         console.log('End with ' + request.url)
+
+
       }
-          const { asin, keyword, productUrl, title, description, offers } = request.userData
-          const item = { title, itemUrl: productUrl, description,keyword,asin,offers}
+
+      else if (request.userData.label === 'seller') {
+        console.log('Going to  seller page: ' + request.url)
+
+        const Offers = await page.evaluate(() => {
+            const offers = []
+            const offerList = document.getElementById('olpOfferList')
+            const offerItems = offerList ? Array.from(offerList.querySelectorAll('div.a-row.a-spacing-mini.olpOffer')) || [] : []
+
+            offerItems.forEach((item) => {
+              const price =  page.$$eval('span.p13n-sc-price', price => price.map(el => el.innerHTML))
+              const shipping = item.querySelector('.olpDeliveryColumn').innerText
+              const sellerName = item.querySelector('.olpSellerName').innerText || 'Amazon.com'
+
+              offers.push({price, shipping, sellerName})
+
+
+            })
+
+          return  offers
+        })
+
+          const { asin, keyword, productUrl, title, description, Offers } = request.userData
+
+          const item = {
+            title,
+            itemUrl: productUrl,
+            description,
+            keyword,
+            asin,
+            Offers
+          }
 
           await Apify.pushData(item)
-
+        }
     },
     handleFailedRequestFunction: async ({ request }) => {
         console.log(`Request ${request.url} failed 4 times`)
