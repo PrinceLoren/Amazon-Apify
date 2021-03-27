@@ -113,7 +113,7 @@ Apify.main(async () => {
         const offers = await page.evaluate(() => {
 
             const price = document.querySelector('#price_inside_bybox') ? ffer.querySelector('#price_inside_bybox').innerText : 'no Price'
-            const seller = offer.querySelector('#tabular-buybox-text') ? offer.querySelector('#tabular-buybox-text').innerText : 'Amazon'
+            const seller = document.querySelector('#tabular-buybox-text') ? offer.querySelector('#tabular-buybox-text').innerText : 'Amazon'
 
             return { price, seller }
 
