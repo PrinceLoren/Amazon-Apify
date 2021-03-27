@@ -63,12 +63,12 @@ Apify.main(async () => {
           });
         }
 
-        console.log('Keep crawl.')
+        console.log('Keep crawling.')
       }
 
 
       else if (request.userData.label === 'product') {
-        console.log('Going to product page: ' + request.url)
+        console.log('Go to product page: ' + request.url)
 
 
         const PageInfo  = await page.evaluate(() => {
@@ -108,7 +108,7 @@ Apify.main(async () => {
       }
 
       else if (request.userData.label === 'seller') {
-        console.log('Going to  seller page: ' + request.url)
+        console.log('Go to  seller page: ' + request.url)
 
         const offers = await page.evaluate(() => {
 
