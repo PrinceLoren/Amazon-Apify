@@ -110,17 +110,21 @@ Apify.main(async () => {
       else if (request.userData.label === 'seller') {
         console.log('Going to  seller page: ' + request.url)
 
-        const Offers = await page.evaluate(() => {
+        const offers = await page.evaluate(() => {
+
+          const offers = Array.from(document.querySelectorAll('.olpOffer'))
+          return offers.map((offer) => {
 
             const price = offer.querySelector('.olpOfferPrice').innerText
             const seller = offer.querySelector('.olpSellerName').innerText
 
             return { price, seller }
 
+          })
+
       })
 
-
-          const { asin, keyword, productUrl, title, description} = request.userData
+          const { asin, keyword, productUrl, title, description, offers} = request.userData
 
           const item = {
             title,
@@ -128,8 +132,8 @@ Apify.main(async () => {
             description,
             keyword,
             asin,
-            price: Offers.price,
-            seller: Offers.seller
+            price: offers.price,
+            seller: offers.seller
           }
 
           await Apify.pushData(item)
