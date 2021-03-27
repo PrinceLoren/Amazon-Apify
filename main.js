@@ -112,15 +112,10 @@ Apify.main(async () => {
 
         const offers = await page.evaluate(() => {
 
-          const offers = Array.from(document.querySelectorAll('.olpOffer'))
-          return offers.map((offer) => {
-
-            const price = offer.querySelector('#price_inside_bybox') ? ffer.querySelector('#price_inside_bybox').innerText : 'no Price'
+            const price = document.querySelector('#price_inside_bybox') ? ffer.querySelector('#price_inside_bybox').innerText : 'no Price'
             const seller = offer.querySelector('#tabular-buybox-text') ? offer.querySelector('#tabular-buybox-text').innerText : 'Amazon'
 
             return { price, seller }
-
-          })
 
       })
 
