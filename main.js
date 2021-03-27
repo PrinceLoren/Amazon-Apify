@@ -111,22 +111,14 @@ Apify.main(async () => {
         console.log('Going to  seller page: ' + request.url)
 
         const Offers = await page.evaluate(() => {
-            const offers = []
-            const offerList = document.getElementById('olpOfferList')
-            const offerItems = offerList ? Array.from(offerList.querySelectorAll('div.a-row.a-spacing-mini.olpOffer')) || [] : []
 
-            offerItems.forEach((item) => {
-              const price =  page.$$eval('span.p13n-sc-price', price => price.map(el => el.innerHTML))
-              const shipping = item.querySelector('.olpDeliveryColumn').innerText
-              const sellerName = item.querySelector('.olpSellerName').innerText || 'Amazon.com'
+            const price = offer.querySelector('.olpOfferPrice').innerText
+            const seller = offer.querySelector('.olpSellerName').innerText
 
-              offers.push({price, shipping, sellerName})
+            return { price, seller }
 
+      })
 
-            })
-
-          return  offers
-        })
 
           const { asin, keyword, productUrl, title, description} = request.userData
 
@@ -136,7 +128,8 @@ Apify.main(async () => {
             description,
             keyword,
             asin,
-            Offers
+            price: Offers.price,
+            seller: Offers.seller
           }
 
           await Apify.pushData(item)
