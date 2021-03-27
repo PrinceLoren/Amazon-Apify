@@ -112,7 +112,7 @@ Apify.main(async () => {
 
         const offers = await page.evaluate(() => {
 
-            const price = ddocument.querySelector('span.a-price > span')  ? document.querySelector('span.a-price > span').innerText : 'no Price'
+            const price = document.querySelector('span.a-price > span')  ? document.querySelector('span.a-price > span').innerText : 'no Price'
             const seller = document.querySelector('#sellerProfileTriggerId') ? document.querySelector('#sellerProfileTriggerId').innerText : 'Amazon'
 
             return { price, seller }
