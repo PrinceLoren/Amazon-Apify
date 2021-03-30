@@ -103,7 +103,7 @@ Apify.main(async () => {
                     return { price, seller }
                 });
 
-                const { asin, keyword, productUrl, title, description } = request.userData;
+                const { asin, keyword, productUrl, title, description } = request.userData
 
                 const item = {
                     title,
@@ -115,7 +115,7 @@ Apify.main(async () => {
                     seller: offers.seller,
                 };
 
-                await Apify.pushData(item);
+                await Apify.pushData(item)
             }
         },
         handleFailedRequestFunction: async ({ request }) => {
